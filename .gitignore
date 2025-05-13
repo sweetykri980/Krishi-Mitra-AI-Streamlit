@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+*.whl
+
+# Virtual environment
+# Replace 'venv_krishi_mitra' with the actual name of your virtual environment folder if different
+venv_krishi_mitra/
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Environment variables
+.env
+.env.*
+*.env
+
+# IDE and Editor specific files
+.vscode/
+.idea/
+*.project
+*.pydevproject
+.project
+.settings/
+*.DS_Store
+*.suo
+*.user
+*.sln
+*.smmap
+
+# Operating System specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Data files (Optional - if your data files are very large or you don't want to commit them)
+# data/knowledge_base/*.csv  # Example if CSVs get too big
+# data/knowledge_base/*.json # Example if JSONs get too big
+
+# Audio files (especially if generated dynamically by TTS)
+*.mp3
+*.wav
+# You can be more specific if you have other audio files you want to keep, e.g., !data/audio_samples/
+response.mp3 # The default TTS output filename we set
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Log files
+*.log
+logs/
+
+# Coverage reports
+.coverage
+coverage.xml
+htmlcov/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
