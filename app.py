@@ -136,17 +136,18 @@ def process_and_respond(user_query_text):
     if "आपकी सहायता करके खुशी हुई।" in bot_response_text:
          st.info("बातचीत समाप्त हो गई है। आप टैब बंद कर सकते हैं।")
 
+# --- Input Area: Text Input and Speak Button ---
 text_prompt = st.chat_input("अपना सवाल यहाँ लिखें...")
 
 if st.button("🎙️ सवाल बोलें (Speak Question)"):
-    with st.spinner("सुन रहा हूँ..."):
-        recognized_text = voice_input.listen_hindi()
-    if recognized_text:
-        st.success(f"आपने कहा (लगभग): {recognized_text}")
-        process_and_respond(recognized_text)
-        st.rerun() 
-    else:
-        st.error("क्षमा करें, मैं आपकी बात सुन नहीं पाया। कृपया दोबारा प्रयास करें या टाइप करें।")
+    # This message will now appear in the Streamlit app when the button is clicked on the deployed version
+    st.warning("वेब संस्करण में प्रत्यक्ष ध्वनि इनपुट वर्तमान में समर्थित नहीं है। कृपया अपना प्रश्न नीचे टाइप करें।")
+    # We are no longer calling voice_input.listen_hindi() here, so the OSError will be avoided.
+    # The app will just show the warning and wait for text input.
+
+if text_prompt:
+    process_and_respond(text_prompt)
+    st.rerun()
 
 if text_prompt:
     process_and_respond(text_prompt)
