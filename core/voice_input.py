@@ -15,7 +15,7 @@ def listen_hindi():
             print("अब आप बोल सकते हैं...")
             audio = recognizer.listen(source, timeout=5, phrase_time_limit=10)
 
-            '''# --- START DEBUG: Save captured audio ---
+            # --- START DEBUG: Save captured audio ---
             if settings.DEBUG_MODE:
                 try:
                     with open("captured_audio.wav", "wb") as f:
@@ -23,7 +23,7 @@ def listen_hindi():
                     print(">>> [DEBUG] Audio captured and saved to captured_audio.wav for review.")
                 except Exception as e_audio_save:
                     print(f">>> [DEBUG] Error saving audio: {e_audio_save}")
-            # --- END DEBUG ---'''
+            # --- END DEBUG ---
 
         except sr.WaitTimeoutError:
             # ... (rest of your code for this exception)

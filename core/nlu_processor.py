@@ -55,10 +55,13 @@ HELP_KEYWORDS = [ # ... (no changes here from last full version) ...
     "मदद", "सहायता", "क्या कर सकते हो", "क्या कर सकता है", "क्या कर सकते हैं",
     "कैसे इस्तेमाल करूं", "हेल्प", "उदाहरण दो", "उदाहरण बताएं"
 ]
-WEATHER_KEYWORDS = ["मौसम", "तापमान", "बारिश", "हवा", "कैसा है आज"]
-MANDI_PRICE_KEYWORDS = ["भाव", "क्या भाव है", "क्या रेट है", "दाम क्या है", "कीमत क्या है", "मंडी में", "का रेट", "का भाव", "का दाम"]
-CROP_KEYWORDS = ["की खेती", "की फसल", "की बुवाई", "फसल"] # General crop related, not for intent directly
-SCHEME_KEYWORDS = ["योजना", "स्कीम", "सब्सिडी", "सरकारी मदद", "लोन", "ऋण", "कार्यक्रम", "सरकारी योजना", "सलाह"]
+WEATHER_KEYWORDS = ["मौसम", "तापमान", "बारिश", "हवा", "कैसा है आज"] # ... (no changes here) ...
+MANDI_PRICE_KEYWORDS = [ # ... (no changes here from last full version where we added "का दाम") ...
+    "भाव", "क्या भाव है", "क्या रेट है", "दाम क्या है", "कीमत क्या है", "मंडी में",
+    "का रेट", "का भाव", "का दाम"
+]
+CROP_KEYWORDS = ["की खेती", "की फसल", "की बुवाई", "फसल"] # ... (no changes here) ...
+SCHEME_KEYWORDS = ["योजना", "स्कीम", "सब्सिडी", "सरकारी मदद", "लोन", "ऋण", "कार्यक्रम", "सरकारी योजना", "सलाह"] # ... (no changes here) ...
 
 
 def process_query_rule_based(query_text):
@@ -95,26 +98,23 @@ def process_query_rule_based(query_text):
         elif is_mandi_q: return {"intent": "get_mandi_price", "entities": {}}
 
     # Priority 4: Scheme Info
-    is_scheme_q = any(sk.lower() in query_lower for sk in SCHEME_KEYWORDS) # General scheme keywords
-    extracted_scheme_name = None # This will store the canonical name of the matched scheme
-
-    if isinstance(SCHEMES_DATA, list): # Ensure SCHEMES_DATA is loaded and is a list
+    is_scheme_q = any(sk.lower() in query_lower for sk in SCHEME_KEYWORDS)
+    # Also check if any known scheme name or its specific keywords are mentioned
+    extracted_scheme_name = None
+    if isinstance(SCHEMES_DATA, list): # Check if SCHEMES_DATA is a list
         for scheme in SCHEMES_DATA:
             if scheme: # Ensure scheme object is not None
                 s_name = scheme.get("name", "").lower()
-                s_keywords_from_json = [k.lower() for k in scheme.get("keywords", [])] # Keywords from JSON
-
-                # Check if the query contains the scheme's main name (or part of it)
-                if s_name and s_name in query_lower: # Check if full scheme name is in query
-                    extracted_scheme_name = scheme.get("name") # Use the canonical name
-                    break 
-                # Check if the query contains any of the scheme's specific keywords from JSON
-                for json_keyword in s_keywords_from_json:
-                    if json_keyword in query_lower: # Check if a defined keyword is in the query
-                        extracted_scheme_name = scheme.get("name") # Return the canonical name
+                s_keywords = [k.lower() for k in scheme.get("keywords", [])]
+                if s_name and s_name in query_lower: # Exact name match
+                    extracted_scheme_name = scheme.get("name") # Use canonical name
+                    break
+                for k_word in s_keywords: # Match specific keywords from JSON
+                    if k_word in query_lower:
+                        extracted_scheme_name = scheme.get("name")
                         break
-            if extracted_scheme_name: # If found by its specific keywords or name, break outer loop
-                break
+                if extracted_scheme_name:
+                    break
     
     if is_scheme_q or extracted_scheme_name: # If general scheme keywords OR a specific scheme was identified
         entities = {}

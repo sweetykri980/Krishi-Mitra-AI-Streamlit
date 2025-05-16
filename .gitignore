@@ -11,7 +11,7 @@ build/
 
 # Virtual environment
 # Replace 'venv_krishi_mitra' with the actual name of your virtual environment folder if different
-venv_krishi_mitra/
+venv_py312/
 .venv/
 venv/
 ENV/
